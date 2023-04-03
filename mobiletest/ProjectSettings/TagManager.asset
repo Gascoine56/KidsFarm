@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Blocking
   - 
   - 
   - 
@@ -50,9 +50,9 @@ TagManager:
   - name: Blocking_object
     uniqueID: 4224513397
     locked: 0
-  - name: Decor
-    uniqueID: 2922493811
-    locked: 0
   - name: Player
     uniqueID: 2354514005
+    locked: 0
+  - name: Decor
+    uniqueID: 2922493811
     locked: 0
