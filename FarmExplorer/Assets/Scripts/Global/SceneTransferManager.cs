@@ -26,7 +26,7 @@ public class SceneTransferManager : MonoBehaviour
 
     public void ReturnToMapScene()
     {
-        SceneManager.LoadScene(0);
+        StartCoroutine(CrossfadeTransition(GetMainMapSceneNameFromIndex()));
     }
 
     private IEnumerator CrossfadeTransition(string sceneName)
@@ -36,5 +36,13 @@ public class SceneTransferManager : MonoBehaviour
         yield return new WaitForSeconds(crossFadeWaitTimeSeconds);
 
         SceneManager.LoadScene(sceneName);
+    }
+
+    public static string GetMainMapSceneNameFromIndex()
+    {
+        string scenePath = SceneUtility.GetScenePathByBuildIndex(0);
+        string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+
+        return sceneName;
     }
 }
