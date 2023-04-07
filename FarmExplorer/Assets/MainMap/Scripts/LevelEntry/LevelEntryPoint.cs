@@ -94,8 +94,7 @@ public class LevelEntryPoint : MonoBehaviour
 
             if (thisCollider == touchedCollider || touchedCollider == vehicleCollider)
             {
-                //Fade effect
-                SceneTransferManager.LoadLevel(sceneToEnter.name, Vehicle.Instance.transform.position, Vehicle.Instance.GetComponentInChildren<SpriteRenderer>().sprite);
+                SceneTransferManager.Instance.LoadLevel(sceneToEnter.name, Vehicle.Instance.transform.position, Vehicle.Instance.GetComponentInChildren<SpriteRenderer>().sprite);
             }
         }
     }
