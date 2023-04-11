@@ -7,7 +7,6 @@ using UnityEngine;
 public class PickableObject : MonoBehaviour
 {
     private Collider2D thisCollider;
-    private Vector3 originalPosition;
     private string colorName;
     private ColorPickingManager colorPickingManager;
     private bool correctPicked = false;
@@ -17,7 +16,6 @@ public class PickableObject : MonoBehaviour
     void Start()
     {
         thisCollider = GetComponent<Collider2D>();
-        originalPosition = transform.position;
         colorPickingManager = ColorPickingManager.Instance;
     }
 
@@ -25,6 +23,12 @@ public class PickableObject : MonoBehaviour
     {
         if (Input.touchCount > 0)Interact();
         if (correctPicked) MoveToStorage();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        colorPickingManager.CheckIfColorToPickItemsOnScreen();
+        Destroy(gameObject);
     }
 
     private void Interact()
@@ -50,7 +54,11 @@ public class PickableObject : MonoBehaviour
     private void MoveToStorage()
     {
         transform.position = Vector3.MoveTowards(transform.position, colorPickingManager.GetPickableObjectStoragePosition(), movementSpeed * Time.deltaTime);
-        //Destroy self
-        //Play animation
+        //Play animation or particle effect
+    }
+
+    public string GetColorName()
+    {
+        return colorName;
     }
 }

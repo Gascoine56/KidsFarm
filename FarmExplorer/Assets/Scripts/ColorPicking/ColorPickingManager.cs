@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 public class ColorPickingManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class ColorPickingManager : MonoBehaviour
 
     [SerializeField] private List<Transform> spawnPoints;
 
-    [SerializeField] private SpriteRenderer pickableObjectStorage;
+    [SerializeField] private PickableObjectStorage pickableObjectStorage;
     [SerializeField] private PickableObject prefab;
     [SerializeField] private Sprite pickableObjectSprite;
 
@@ -28,9 +29,17 @@ public class ColorPickingManager : MonoBehaviour
     {
         if (Instance != null) print("There is more than one Player instance");
         Instance = this;
-        colorToPick = GetRandomColor();
-        pickableObjectStorage.GetComponent<SpriteRenderer>().color = colorsToPick[colorToPick];
+
         SpawnPickableObjects();
+        SetColorToPick();
+        CheckIfColorToPickItemsOnScreen();
+    }
+
+    private void SetColorToPick()
+    {
+        colorToPick = GetRandomColor();
+        pickableObjectStorage.SetColor(colorsToPick[colorToPick]);
+        colorsToPick.Remove(colorToPick);
     }
 
     private void SpawnPickableObjects()
@@ -42,10 +51,31 @@ public class ColorPickingManager : MonoBehaviour
             string color = GetRandomColor();
             pickableObject.SetSpriteAndColor(pickableObjectSprite, colorsToPick[color], color);
         }
+    }
 
-        foreach (Transform spawnPoint in spawnPoints)
+    public void CheckIfColorToPickItemsOnScreen()
+    {
+        int remainingObjectsOfColorToPick = -1;
+        PickableObject[] obj = (PickableObject[])FindObjectsOfType(typeof(PickableObject));
+        foreach (PickableObject o in obj)
         {
-            Destroy(spawnPoint.gameObject);
+            if (o.GetColorName().Equals(colorToPick))
+            {
+                remainingObjectsOfColorToPick++;
+            }
+        }
+        if(remainingObjectsOfColorToPick <= 0)
+        {
+            if (colorsToPick.Count > 0)
+            {
+                SetColorToPick();
+                //some animation of changing the color and yay hura
+            }
+            else
+            {
+                //VictoryScreen, pause game and afterwards:
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
         }
     }
 
