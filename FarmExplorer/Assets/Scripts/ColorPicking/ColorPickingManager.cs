@@ -45,8 +45,7 @@ public class ColorPickingManager : MonoBehaviour
     private void SpawnPickableObjects()
     {
         foreach (Transform spawnPoint in spawnPoints)
-        {        
-            
+        {
             PickableObject pickableObject =  Instantiate(prefab, spawnPoint.position, Quaternion.identity);
             string color = GetRandomColor();
             pickableObject.SetSpriteAndColor(pickableObjectSprite, colorsToPick[color], color);
@@ -55,7 +54,7 @@ public class ColorPickingManager : MonoBehaviour
 
     public void CheckIfColorToPickItemsOnScreen()
     {
-        int remainingObjectsOfColorToPick = -1;
+        int remainingObjectsOfColorToPick = 0;
         PickableObject[] obj = (PickableObject[])FindObjectsOfType(typeof(PickableObject));
         foreach (PickableObject o in obj)
         {
@@ -64,11 +63,13 @@ public class ColorPickingManager : MonoBehaviour
                 remainingObjectsOfColorToPick++;
             }
         }
+        Debug.Log(remainingObjectsOfColorToPick);
         if(remainingObjectsOfColorToPick <= 0)
         {
             if (colorsToPick.Count > 0)
             {
                 SetColorToPick();
+                CheckIfColorToPickItemsOnScreen();
                 //some animation of changing the color and yay hura
             }
             else

@@ -23,13 +23,7 @@ public class PickableObject : MonoBehaviour
     {
         if (Input.touchCount > 0)Interact();
         if (correctPicked) MoveToStorage();
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        colorPickingManager.CheckIfColorToPickItemsOnScreen();
-        Destroy(gameObject);
-    }
+    }   
 
     private void Interact()
     {
