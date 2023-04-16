@@ -39,6 +39,4 @@ public class BackToMapButton : MonoBehaviour
     {
         SceneTransferManager.Instance.ReturnToMapScene();
     }
-
-
 }

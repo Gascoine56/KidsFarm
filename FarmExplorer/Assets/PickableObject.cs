@@ -2,41 +2,52 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class PickableObject : MonoBehaviour
 {
-    private Collider2D thisCollider;
-    private string colorName;
-    private ColorPickingManager colorPickingManager;
-    private bool correctPicked = false;
-    
+    public enum PickableObjectState
+    {
+        NONE,
+        WRONGPICK,
+        CORRECTPICK
+    }
+
+    private PickableObjectState state = PickableObjectState.NONE;
+
     [SerializeField] private float movementSpeed;
+
+    private float shakeSpeed = 30;
+    private float shakeDistance = 0.4f;
+    private float shakeTime = 0.5f;
+    private float shakeTimer = 0;
+
+    private Collider2D thisCollider;
+    private Transform thisTransform;
+
+    private ColorPickingManager colorPickingManager;
+    private string colorName;
+    private Vector3 originalPosition;
+
+    private void Awake()
+    {
+        thisTransform = GetComponent<Transform>();
+        thisCollider = GetComponent<Collider2D>();
+        originalPosition = thisTransform.position;
+    }
 
     void Start()
     {
-        thisCollider = GetComponent<Collider2D>();
         colorPickingManager = ColorPickingManager.Instance;
     }
 
     void Update()
     {
-        if (Input.touchCount > 0)Interact();
-        if (correctPicked) MoveToStorage();
-    }   
-
-    private void Interact()
-    {
-        Touch touch = Input.GetTouch(0);
-        Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-        Collider2D touchedCollider = Physics2D.OverlapPoint(touchPosition);
-        if (thisCollider == touchedCollider)
-        {
-            if(colorName == colorPickingManager.GetColorToPick()) correctPicked= true;
-            //else shake object
-        }
+        Interact();
+        HandleState();
     }
-
     public void SetSpriteAndColor(Sprite sprite, Color colorValue, string colorName)
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
@@ -45,14 +56,61 @@ public class PickableObject : MonoBehaviour
         this.colorName = colorName;
     }
 
-    private void MoveToStorage()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, colorPickingManager.GetPickableObjectStoragePosition(), movementSpeed * Time.deltaTime);
-        //Play animation or particle effect
-    }
-
     public string GetColorName()
     {
         return colorName;
     }
+
+    private void Interact()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+            Collider2D touchedCollider = Physics2D.OverlapPoint(touchPosition);
+
+            if (thisCollider == touchedCollider)
+            {
+                if (colorName == colorPickingManager.GetColorToPick()) state = PickableObjectState.CORRECTPICK;
+                else state = PickableObjectState.WRONGPICK;
+            }
+        }
+    }
+
+    private void HandleState()
+    {
+        switch (state)
+        {
+            case PickableObjectState.NONE:
+                return;
+            case PickableObjectState.WRONGPICK:
+                WrongObjectPicked();
+                break;
+            case PickableObjectState.CORRECTPICK:
+                MoveToStorage();
+                break;
+        }
+    }
+
+    private void MoveToStorage()
+    {
+        if (state == PickableObjectState.CORRECTPICK)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, colorPickingManager.GetPickableObjectStoragePosition(), movementSpeed * Time.deltaTime);
+        }
+    }
+
+    private void WrongObjectPicked()
+    {
+        var xOffset = Mathf.Sin(Time.time * shakeSpeed) * shakeDistance;
+
+        thisTransform.position = originalPosition + new Vector3(xOffset, 0, 0) * shakeDistance;
+        shakeTimer += Time.deltaTime;
+        if (shakeTimer > shakeTime)
+        {
+            state = PickableObjectState.NONE;
+            shakeTimer = 0;
+        }
+    }
+
 }
