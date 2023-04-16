@@ -11,9 +11,7 @@ public class Vehicle : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
 
     private Collider2D vehicleCollider;
-
-    private Vector2 target;
-    private bool isMoving = false;
+    private bool isMoving;
 
     private void Awake()
     {
@@ -26,7 +24,6 @@ public class Vehicle : MonoBehaviour
     private void SetVehicleData()
     {
         transform.position = SceneTransferDataStore.GetVehicleLocation();
-        target = transform.position;
         spriteRenderer.sprite = SceneTransferDataStore.GetSelectedVehicleSprite();
     }
 
@@ -35,7 +32,6 @@ public class Vehicle : MonoBehaviour
         if (SceneTransferDataStore.GetGameStarted())
         {
             HandleMovement();
-            ChangeVisual();
         }
     }
 
@@ -44,33 +40,31 @@ public class Vehicle : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            target = Camera.main.ScreenToWorldPoint(touch.position);
+            Vector2 target = Camera.main.ScreenToWorldPoint(touch.position);
+            Vector2 moveVector = Vector2.MoveTowards(transform.position, target, Time.deltaTime * moveSpeed);
+            transform.position = moveVector;
+            ChangeVisual(target.x);
+            isMoving = true;
         }
-        Vector2 moveVector = Vector2.MoveTowards(transform.position, target, Time.deltaTime * moveSpeed);
-        transform.position = moveVector;
-
-        isMoving = moveVector != target;
+        else
+        {
+            isMoving = false;
+        }
     }
 
-    private void ChangeVisual()
+    private void ChangeVisual(float targetX)
     {
-        if (target.x > transform.position.x) spriteRenderer.flipX = true;
-        else if (target.x < transform.position.x) spriteRenderer.flipX = false;
+        if (targetX > transform.position.x) spriteRenderer.flipX = true;
+        else if (targetX < transform.position.x) spriteRenderer.flipX = false;
     }
 
     public void ChangeVehicleSprite()
     {
         spriteRenderer.sprite = SceneTransferDataStore.GetSelectedVehicleSprite();
-        Vehicle.Instance.ResetTarget();
     }
 
     public bool GetIsMoving()
     {
         return isMoving;
-    }  
-
-    public void ResetTarget()
-    {
-        target = Vector2.zero;
     }
 }
