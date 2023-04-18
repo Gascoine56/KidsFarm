@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,11 @@ public class Button : MonoBehaviour
 
     private void Update()
     {
+        HandleInteraction();
+    }
+
+    private void HandleInteraction()
+    {
         if (soundManager.GetCanPlaySoundClip())
         {
             if (Input.touchCount > 0)
@@ -33,11 +39,16 @@ public class Button : MonoBehaviour
 
                 if (boxCollider == touchedCollider)
                 {
-                    AudioClip clipToPlay = audioClips[Random.Range(0, audioClips.Length)];
-                    soundManager.PlaySoundClip(clipToPlay);
-                    visual.SetSelectedVisual();
+                    PlaySound();
+                    if (visual != null) visual.SetSelectedVisual();
                 }
             }
         }
+    }
+
+    private void PlaySound()
+    {
+        AudioClip clipToPlay = audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
+        soundManager.PlaySoundClip(clipToPlay);
     }
 }
