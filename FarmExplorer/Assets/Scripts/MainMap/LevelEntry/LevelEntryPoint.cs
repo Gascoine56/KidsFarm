@@ -88,13 +88,16 @@ public class LevelEntryPoint : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-            Collider2D touchedCollider = Physics2D.OverlapPoint(touchPosition);
-            Collider2D vehicleCollider = player.GetComponent<Collider2D>();
-
-            if (thisCollider == touchedCollider || touchedCollider == vehicleCollider)
+            if (touch.phase == TouchPhase.Began)
             {
-                SceneTransferManager.Instance.LoadLevel(sceneToEnter.name, Vehicle.Instance.transform.position, Vehicle.Instance.GetComponentInChildren<SpriteRenderer>().sprite);
+                Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                Collider2D touchedCollider = Physics2D.OverlapPoint(touchPosition);
+                Collider2D vehicleCollider = player.GetComponent<Collider2D>();
+
+                if (thisCollider == touchedCollider || touchedCollider == vehicleCollider)
+                {
+                    SceneTransferManager.Instance.LoadLevel(sceneToEnter.name, Vehicle.Instance.transform.position, Vehicle.Instance.GetComponentInChildren<SpriteRenderer>().sprite);
+                }
             }
         }
     }

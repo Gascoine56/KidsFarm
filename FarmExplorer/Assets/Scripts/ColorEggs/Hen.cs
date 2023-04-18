@@ -48,13 +48,13 @@ public class Hen : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PickableObject po = collision.gameObject.GetComponent<PickableObject>();
-        po.SetPickableObjectStateHidden(true);
+        if(po.GetPickableObjectState() != PickableObject.PickableObjectState.CORRECTPICK) po.SetPickableObjectStateHidden(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         PickableObject po = collision.gameObject.GetComponent<PickableObject>();
-        po.SetPickableObjectStateHidden(false);
+        if (po.GetPickableObjectState() != PickableObject.PickableObjectState.CORRECTPICK) po.SetPickableObjectStateHidden(false);
     }
 
     private void SetPosition()

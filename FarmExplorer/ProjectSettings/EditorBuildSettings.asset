@@ -20,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ColorOrchard.unity
     guid: cdf0aa0f791641d439bd4f07d43a18ae
+  - enabled: 1
+    path: Assets/Scenes/ColorEggs.unity
+    guid: 3b85f9393d2d0e740a543bd5632b9f11
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: a6a07e4bbd057a741bdde847501339a6, type: 2}

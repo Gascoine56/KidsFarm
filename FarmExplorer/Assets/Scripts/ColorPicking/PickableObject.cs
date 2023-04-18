@@ -68,13 +68,16 @@ public class PickableObject : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-            Collider2D touchedCollider = Physics2D.OverlapPoint(touchPosition);
-
-            if (thisCollider == touchedCollider)
+            if (touch.phase == TouchPhase.Began)
             {
-                if (colorName == colorPickingManager.GetColorToPick()) state = PickableObjectState.CORRECTPICK;
-                else state = PickableObjectState.WRONGPICK;
+                Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                Collider2D touchedCollider = Physics2D.OverlapPoint(touchPosition);
+
+                if (thisCollider == touchedCollider)
+                {
+                    if (colorName == colorPickingManager.GetColorToPick()) state = PickableObjectState.CORRECTPICK;
+                    else state = PickableObjectState.WRONGPICK;
+                }
             }
         }
     }
@@ -142,4 +145,8 @@ public class PickableObject : MonoBehaviour
         }
     }
 
+    public PickableObjectState GetPickableObjectState()
+    {
+        return state;
+    }
 }
