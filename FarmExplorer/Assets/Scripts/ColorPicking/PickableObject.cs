@@ -12,7 +12,8 @@ public class PickableObject : MonoBehaviour
     {
         NONE,
         WRONGPICK,
-        CORRECTPICK
+        CORRECTPICK,
+        HIDDEN
     }
 
     private PickableObjectState state = PickableObjectState.NONE;
@@ -45,8 +46,9 @@ public class PickableObject : MonoBehaviour
 
     void Update()
     {
-        Interact();
+        if (state != PickableObjectState.HIDDEN) Interact();
         HandleState();
+        
     }
     public void SetSpriteAndColor(Sprite sprite, Color colorValue, string colorName)
     {
@@ -89,7 +91,20 @@ public class PickableObject : MonoBehaviour
             case PickableObjectState.CORRECTPICK:
                 MoveToStorage();
                 break;
+            case PickableObjectState.HIDDEN:
+                Hide();
+                break;
         }
+    }
+
+    private void Hide()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    private void Show()
+    {
+        GetComponent<SpriteRenderer>().enabled = true;
     }
 
     private void MoveToStorage()
@@ -110,6 +125,20 @@ public class PickableObject : MonoBehaviour
         {
             state = PickableObjectState.NONE;
             shakeTimer = 0;
+        }
+    }
+
+    public void SetPickableObjectStateHidden(bool hide)
+    {
+        if (hide)
+        {
+            state = PickableObjectState.HIDDEN;
+            Hide();
+        }
+        else
+        {
+            state = PickableObjectState.NONE;
+            Show();
         }
     }
 

@@ -12,6 +12,7 @@ public class Hen : MonoBehaviour
     private Collider2D circleCollider;
 
     private bool isInOriginalPosition = true;
+    List<GameObject> currentCollisions = new List<GameObject>();
 
     private void Awake()
     {
@@ -42,6 +43,18 @@ public class Hen : MonoBehaviour
                 SetPosition();
             }
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        PickableObject po = collision.gameObject.GetComponent<PickableObject>();
+        po.SetPickableObjectStateHidden(true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        PickableObject po = collision.gameObject.GetComponent<PickableObject>();
+        po.SetPickableObjectStateHidden(false);
     }
 
     private void SetPosition()

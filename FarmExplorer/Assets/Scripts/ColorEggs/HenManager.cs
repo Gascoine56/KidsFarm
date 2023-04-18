@@ -5,19 +5,21 @@ using UnityEngine;
 public class HenManager : MonoBehaviour
 {
     public static HenManager Instance { get; private set; }
+    private SoundManager soundManager;
 
     [SerializeField] private AudioClip[] audioClips;
     [SerializeField] private List<Sprite> henSprites;
-
-    private AudioSource audioSource;
 
     private void Awake()
     {
         if (Instance != null) print("There is more than one Player instance");
         Instance = this;
 
-        audioSource = GetComponent<AudioSource>();
         AssignSpritesToHen();
+    }
+    private void Start()
+    {
+        soundManager = SoundManager.Instance;
     }
 
     private void AssignSpritesToHen()
@@ -35,7 +37,6 @@ public class HenManager : MonoBehaviour
     public void PlaySound()
     {
         AudioClip clipToPlay = audioClips[Random.Range(0, audioClips.Length)];
-        audioSource.clip = clipToPlay;
-        audioSource.Play();
+        soundManager.PlaySoundClip(clipToPlay);
     }
 }
