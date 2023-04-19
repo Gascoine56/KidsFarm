@@ -17,25 +17,25 @@ public class SceneTransferManager : MonoBehaviour
         if (Instance != null) print("There is more than one Player instance");
         Instance = this;
     }
-    public void LoadLevel(string sceneName, Vector3 vehiclePosition, Sprite selectedVehicleSprite)
+    public void LoadLevel(int sceneIndex, Vector3 vehiclePosition, Sprite selectedVehicleSprite)
     {
         SceneTransferDataStore.SetVehicleLocation(vehiclePosition);
         SceneTransferDataStore.SetSelectedVehicleSprite(selectedVehicleSprite);
-        StartCoroutine(CrossfadeTransition(sceneName));        
+        StartCoroutine(CrossfadeTransition(sceneIndex));        
     }
 
     public void ReturnToMapScene()
     {
-        StartCoroutine(CrossfadeTransition(GetMainMapSceneNameFromIndex()));
+        StartCoroutine(CrossfadeTransition(0));
     }
 
-    private IEnumerator CrossfadeTransition(string sceneName)
+    private IEnumerator CrossfadeTransition(int sceneIndex)
     {
         crossfadeAnimator.SetTrigger(CROSSFADE_TRIGGER);
 
         yield return new WaitForSeconds(crossFadeWaitTimeSeconds);
 
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneIndex);
     }
 
     public static string GetMainMapSceneNameFromIndex()

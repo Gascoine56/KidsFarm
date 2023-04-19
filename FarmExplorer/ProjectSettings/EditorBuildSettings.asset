@@ -24,4 +24,6 @@ EditorBuildSettings:
     path: Assets/Scenes/ColorEggs.unity
     guid: 3b85f9393d2d0e740a543bd5632b9f11
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: db02fb57cc06f5a42be40bef896929f2, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 635b22368958d714ba3eeac8f437a83e, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: a6a07e4bbd057a741bdde847501339a6, type: 2}

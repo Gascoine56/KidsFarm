@@ -1165,6 +1165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1717263944}
   - component: {fileID: 1717263943}
+  - component: {fileID: 1717263945}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -1239,6 +1240,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1717263945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717263942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0e55a77986dc3345ad165ee46d6d858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1735039028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2035,6 +2048,14 @@ PrefabInstance:
     - target: {fileID: 6871543962409122841, guid: df702e501ca00584c954175e3fc1b5a0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6871543962409122843, guid: df702e501ca00584c954175e3fc1b5a0, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 6871543962409122843, guid: df702e501ca00584c954175e3fc1b5a0, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 6871543962409122845, guid: df702e501ca00584c954175e3fc1b5a0, type: 3}
       propertyPath: m_Name

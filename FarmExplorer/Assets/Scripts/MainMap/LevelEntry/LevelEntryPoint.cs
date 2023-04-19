@@ -13,7 +13,7 @@ public class LevelEntryPoint : MonoBehaviour
     [SerializeField] private AudioClip enterCollisionSound;
     [SerializeField] private Vector3 activeScaleBackGround;
     [SerializeField] private Vector3 activeScaleIcon;
-    [SerializeField] private SceneAsset sceneToEnter;
+    [SerializeField] private int sceneIndex;
 
     private AudioSource audioSource;
     private Collider2D thisCollider;
@@ -96,7 +96,7 @@ public class LevelEntryPoint : MonoBehaviour
 
                 if (thisCollider == touchedCollider || touchedCollider == vehicleCollider)
                 {
-                    SceneTransferManager.Instance.LoadLevel(sceneToEnter.name, Vehicle.Instance.transform.position, Vehicle.Instance.GetComponentInChildren<SpriteRenderer>().sprite);
+                    SceneTransferManager.Instance.LoadLevel(sceneIndex, Vehicle.Instance.transform.position, Vehicle.Instance.GetComponentInChildren<SpriteRenderer>().sprite);
                 }
             }
         }

@@ -32,12 +32,12 @@ public class ColorPickingManager : MonoBehaviour
         Instance = this;
 
         SpawnPickableObjects();
-        SetColorToPick();
-        CheckIfColorToPickItemsOnScreen();
     }
 
     private void Start()
     {
+        SetColorToPick();
+        CheckIfColorToPickItemsOnScreen();
         SetReplayCanvasActiveState(false);
     }
 
