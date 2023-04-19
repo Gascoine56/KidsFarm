@@ -17,11 +17,10 @@ public class ColorPickingManager : MonoBehaviour
         { "YELLOW", new Color(1, 1, 0) }
     };
 
-    [SerializeField] private List<Transform> spawnPoints;
+    [SerializeField] private List<PickableObject> pickableObjects;
 
     [SerializeField] private Canvas replayCanvas;
     [SerializeField] private PickableObjectStorage pickableObjectStorage;
-    [SerializeField] private PickableObject prefab;
     [SerializeField] private Sprite pickableObjectSprite;
 
     private string colorToPick;
@@ -31,7 +30,7 @@ public class ColorPickingManager : MonoBehaviour
         if (Instance != null) print("There is more than one Player instance");
         Instance = this;
 
-        SpawnPickableObjects();
+        SetPickableObjectsProperties();
     }
 
     private void Start()
@@ -52,11 +51,10 @@ public class ColorPickingManager : MonoBehaviour
         return colorsToPick[colorToPick];
     }
 
-    private void SpawnPickableObjects()
+    private void SetPickableObjectsProperties()
     {
-        foreach (Transform spawnPoint in spawnPoints)
+        foreach (PickableObject pickableObject in pickableObjects)
         {
-            PickableObject pickableObject = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
             string color = GetRandomColor();
             pickableObject.SetSpriteAndColor(pickableObjectSprite, colorsToPick[color], color);
         }

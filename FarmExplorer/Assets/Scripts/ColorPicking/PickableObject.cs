@@ -54,7 +54,7 @@ public class PickableObject : MonoBehaviour
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = colorValue;
-        spriteRenderer.sprite = sprite;
+        if(sprite != null) spriteRenderer.sprite = sprite;
         this.colorName = colorName;
     }
 
@@ -100,14 +100,16 @@ public class PickableObject : MonoBehaviour
         }
     }
 
-    private void Hide()
+    public void Hide()
     {
         GetComponent<SpriteRenderer>().enabled = false;
+        thisCollider.enabled = false;
     }
 
-    private void Show()
+    public void Show()
     {
         GetComponent<SpriteRenderer>().enabled = true;
+        thisCollider.enabled = true;
     }
 
     private void MoveToStorage()

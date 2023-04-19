@@ -6,23 +6,22 @@ using UnityEngine;
 public class Hen : MonoBehaviour
 {
     [SerializeField] private Transform moveToPoint;
+    [SerializeField] List<PickableObject> eggsToHide;
 
     private HenManager henManager;
-    private Vector3 originalPosition;
     private Collider2D circleCollider;
 
-    private bool isInOriginalPosition = true;
-    List<GameObject> currentCollisions = new List<GameObject>();
+    private bool hasMoved = false;
 
     private void Awake()
     {
-        originalPosition = transform.position;
         circleCollider = GetComponent<Collider2D>();
     }
 
     private void Start()
     {
         henManager = HenManager.Instance;
+        HideEggs();
     }
 
     private void Update()
@@ -40,39 +39,39 @@ public class Hen : MonoBehaviour
             if (circleCollider == touchedCollider)
             {
                 henManager.PlaySound();
-                SetPosition();
+                if (!hasMoved)
+                {
+                    MoveToPosition();
+                    ShowEggs();
+                }
             }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void MoveToPosition()
     {
-        PickableObject po = collision.gameObject.GetComponent<PickableObject>();
-        if(po.GetPickableObjectState() != PickableObject.PickableObjectState.CORRECTPICK) po.SetPickableObjectStateHidden(true);
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        PickableObject po = collision.gameObject.GetComponent<PickableObject>();
-        if (po.GetPickableObjectState() != PickableObject.PickableObjectState.CORRECTPICK) po.SetPickableObjectStateHidden(false);
-    }
-
-    private void SetPosition()
-    {
-        if (isInOriginalPosition)
-        {
-            transform.position = moveToPoint.position;
-            isInOriginalPosition = false;
-        }
-        else
-        {
-            transform.position = originalPosition;
-            isInOriginalPosition = true;
-        }
+        transform.position = moveToPoint.position;
+        hasMoved = true;
     }
 
     public SpriteRenderer GetSpriteRenderer()
     {
         return GetComponent<SpriteRenderer>();
+    }
+
+    private void HideEggs()
+    {
+        foreach (var egg in eggsToHide)
+        {
+            egg.Hide();
+        }
+    }
+
+    private void ShowEggs()
+    {
+        foreach (var egg in eggsToHide)
+        {
+            egg.Show();
+        }
     }
 }
